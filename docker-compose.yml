@@ -1,0 +1,42 @@
+version: "1"
+
+services:
+  frontend:
+    image: bouhlalm/frontend:1.0.1
+    container_name: frontend-cont
+    ports:
+      - 8081:80
+    networks:
+      - bridgenetwork
+    depends_on:
+      - backend
+
+  backend:
+    image: bouhlalm/backend:1.0.1
+    container_name: backend-cont
+    ports:
+      - 8080:8080
+    networks:
+      - bridgenetwork
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:latest
+    container_name: mysql-cont
+    ports:
+      - 3306:3306
+    volumes:
+      - dbvol:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: azer12
+    networks:
+      - bridgenetwork
+
+networks:
+  bridgenetwork:
+    driver: bridge
+
+volumes:
+  dbvol:
+    driver: local
